@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">ToDo</string>
+    <string name="text1">fdаfghjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjdаfghjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjksddаfghjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjksddаfghjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjksddаfghjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjksddаfghjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjksddаfghjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjksddаfghjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjksddаfghjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjksdjjjksdfsf</string>
+
+    <string name="text2">fdssdfsdfsdfsdfsdfsdfsdfsdff</string>
+    <string name="text3">fdsf</string>
+    <string name="text4">fdsdfsdfsdfsf</string>
+    <string name="text5">fddsfsdfsdfsdsf</string>
+    <string name="text6">fdsf</string>
+    <string name="text7">fddsfsdfsdfsdfdsgsd sdfsdf fsdfsf</string>
+    <string name="text8">f dfsf fsdf  sdf dsf</string>
+    <string name="text9">fdfs fdsf  sdf dsf</string>
+    <string name="text10">fdsffff</string>
+    <string name="text11">fdsddssf</string>
+    <string name="text12">fdsddf</string>
+    <string name="text13">fdssf</string>
+    <string name="text14">fdsf</string>
+    <string name="startTitle">ToDo List</string>
+    <string name="addTitle">Add New ToDo</string>
+    <string name="addNew">добавлена новая запись</string>
+    <string name="TextNull">новая запись не добавлена</string>
+</resources>
