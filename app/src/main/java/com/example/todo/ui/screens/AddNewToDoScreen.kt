@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.todo.R
 import com.example.todo.model.TodoItem
 import com.example.todo.model.impotance
-import com.example.todo.ui.TodoItemsRepository
+import com.example.todo.data.TodoItemsRepository
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
@@ -51,10 +51,10 @@ fun AddNewToDoScreen(
 
     var text by remember { mutableStateOf("") }
     var impotance: impotance
-    var deadline: Date?
+    var deadline: String?
     val jobDone = false
-    val dateOfCreation = Date()
-    val dateOfChange: Date? = Date()
+    val dateOfCreation = Date().toString()
+    val dateOfChange: String = Date().toString()
     var ToDoList = state.value.ToDoList
 
 
@@ -77,7 +77,7 @@ fun AddNewToDoScreen(
 
         impotance = DropDownMenuImpotance()
 
-        deadline = pickDate()
+        deadline = pickDate().toString()
 
         Button(onClick = {
             if (text != "") {
@@ -87,7 +87,7 @@ fun AddNewToDoScreen(
                         text = text,
                         dateOfChange = dateOfChange,
                         dateOfCreation = dateOfCreation,
-                        deadline = deadline,
+                        deadline = deadline!!,
                         impotance = impotance,
                         jobDone = jobDone
                     )

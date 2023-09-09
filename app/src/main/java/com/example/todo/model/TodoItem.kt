@@ -2,7 +2,6 @@ package com.example.todo.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.serialization.Serializable
 import java.util.Date
 
 
@@ -16,8 +15,8 @@ data class TodoItem(
     val id: Int=0,
     val text: String,
     val impotance: impotance,
-    val deadline: Date?,
+    val deadline: String,
     val jobDone: Boolean,
-    val dateOfCreation: Date,
-    val dateOfChange: Date?
+    val dateOfCreation: String,
+    val dateOfChange: String
 )

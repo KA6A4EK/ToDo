@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.todo.ui.TodoItemsRepository
-import com.example.todo.ui.TodoListViewEvent
+import com.example.todo.data.TodoItemsRepository
+import com.example.todo.data.TodoListViewEvent
 
 @Composable
 fun ScreenWithToDo(viewModel: TodoItemsRepository) {

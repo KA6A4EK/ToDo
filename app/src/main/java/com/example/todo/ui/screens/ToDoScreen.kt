@@ -26,8 +26,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.todo.R
-import com.example.todo.ui.TodoItemsRepository
-import com.example.todo.ui.TodoListViewEvent
+import com.example.todo.data.TodoItemsRepository
+import com.example.todo.data.TodoListViewEvent
 
 enum class Screen(@StringRes val title: Int) {
     Start(title = R.string.startTitle),
