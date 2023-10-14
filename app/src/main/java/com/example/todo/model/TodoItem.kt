@@ -16,7 +16,6 @@ data class TodoItem(
     val text: String,
     val impotance: impotance,
     val deadline: String,
-    val jobDone: Boolean,
     val dateOfCreation: String,
     val dateOfChange: String
 )

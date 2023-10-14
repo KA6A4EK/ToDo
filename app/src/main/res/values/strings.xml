@@ -17,6 +17,16 @@
     <string name="text14">fdsf</string>
     <string name="startTitle">ToDo List</string>
     <string name="addTitle">Add New ToDo</string>
+    <string name="EditToDo">Edit ToDo</string>
     <string name="addNew">добавлена новая запись</string>
     <string name="TextNull">новая запись не добавлена</string>
+    <string name="update">редактировать</string>
+    <string name="delete">удалить</string>
+    <string name="impotance">важность %1$s</string>
+    <string name="deadline">\nдедлайн %1$s</string>
+    <string name="add_description">введите описание</string>
+    <string name="add_new_note">добавить новую запись</string>
+    <string name="save">Сохранить</string>
+    <string name="succefull_update">запись отредактирована</string>
+    <string name="bad_editing">запись не отредактирована\nпустой текст</string>
 </resources>

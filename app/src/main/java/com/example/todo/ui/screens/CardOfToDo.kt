@@ -2,7 +2,7 @@
 
 package com.example.todo.ui.screens
 
-import android.icu.text.SimpleDateFormat
+import android.content.res.Resources.Theme
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -11,6 +11,7 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
@@ -19,6 +20,7 @@ import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,27 +29,33 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.todo.ui.theme.ToDoTheme
+import com.example.todo.R
+import com.example.todo.data.TodoItemsRepository
 import com.example.todo.model.TodoItem
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ToDoCard(modifier: Modifier = Modifier, ToDo: TodoItem, onDelete: (todo: TodoItem) -> Unit) {
+fun ToDoCard(
+    modifier: Modifier = Modifier,
+    viewModel: TodoItemsRepository,
+    ToDo: TodoItem,
+    onDelete: (todo: TodoItem) -> Unit,
+    onEdit: () -> Unit
+) {
 
-    val squareSize = 78.dp
+    val squareSize = 1.dp
     val swipeableState = rememberSwipeableState(0)
     val sizePx = with(LocalDensity.current) { squareSize.toPx() }
     val anchors = mapOf(0f to 0, sizePx to 1)
     var expanded by remember { mutableStateOf(false) }
 
     Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .swipeable(
                 state = swipeableState, anchors = anchors,
@@ -56,11 +64,14 @@ fun ToDoCard(modifier: Modifier = Modifier, ToDo: TodoItem, onDelete: (todo: Tod
             )
     ) {
         if (swipeableState.targetValue == 1) {
-            Card {
-                Button(onClick = { onDelete(ToDo) }) {
-                    Text(text = "удалить")
-                }
-
+            Button(onClick = { onDelete(ToDo) }) {
+                Text(text = stringResource(R.string.delete))
+            }
+            Button(onClick = {
+                onEdit()
+                viewModel.uiState.value.idToEdit = ToDo.id
+            }) {
+                Text(text = stringResource(R.string.update))
             }
         }
 
@@ -69,6 +80,7 @@ fun ToDoCard(modifier: Modifier = Modifier, ToDo: TodoItem, onDelete: (todo: Tod
                 .fillMaxWidth()
                 .offset { IntOffset(swipeableState.offset.value.roundToInt(), 0) }
                 .clickable { expanded = !expanded }
+                .heightIn(min = 55.dp)
         ) {
             Column(
                 Modifier.animateContentSize(
@@ -79,19 +91,18 @@ fun ToDoCard(modifier: Modifier = Modifier, ToDo: TodoItem, onDelete: (todo: Tod
                 )
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier) {
-                    CheckJobDone(Done = ToDo.jobDone)
                     Text(
                         text = ToDo.text,
-                        maxLines = 3
+                        style = MaterialTheme.typography.headlineMedium,
+                        maxLines = if (expanded) 10 else 2
                     )
                 }
                 if (expanded) {
                     Text(
-                        text = "важность ${ToDo.impotance}\nдедлайн ${
-                            SimpleDateFormat("dd.MM.yyyy").format(
-                                ToDo.deadline
-                            )
-                        }", Modifier.padding(start = 8.dp),
+                        text = stringResource(R.string.impotance, ToDo.impotance) +
+                                stringResource(R.string.deadline, ToDo.deadline.replace("GMT ", "")),
+                        modifier = Modifier.padding(start = 8.dp),
+                        style = MaterialTheme.typography.headlineSmall
                     )
                 }
             }
@@ -100,21 +111,3 @@ fun ToDoCard(modifier: Modifier = Modifier, ToDo: TodoItem, onDelete: (todo: Tod
 }
 
 
-@Composable
-fun CheckJobDone(Done: Boolean) {
-    val text = if (Done) "V" else "O"
-    val color = if (Done) Color.Green else Color.Red
-    Text(text = text, color = color, fontSize = 20.sp, modifier = Modifier.padding(16.dp))
-}
-
-@Composable
-fun CardDelete() {
-
-}
-
-@Preview
-@Composable
-fun TodoPerw() {
-    ToDoTheme {
-    }
-}

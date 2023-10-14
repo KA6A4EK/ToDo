@@ -6,7 +6,6 @@ import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -15,7 +14,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -31,10 +29,10 @@ import com.example.todo.data.TodoListViewEvent
 
 enum class Screen(@StringRes val title: Int) {
     Start(title = R.string.startTitle),
-    AddToDo(title = R.string.addTitle)
+    AddToDo(title = R.string.addTitle),
+    Edit(title = R.string.EditToDo)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Screen(
     navController: NavHostController = rememberNavController(),
@@ -48,30 +46,40 @@ fun Screen(
     Scaffold(
         topBar = {
             ToDoAppBar(
-                buttonAdd = { navController.navigate(Screen.AddToDo.name) },
                 navigateUp = { navController.navigateUp() }, currentScreen = currentScreen
             )
         }
     ) { innerPadding ->
-        val uiState by viewModel.uiState.collectAsState()
-
-
         NavHost(
             navController = navController,
             startDestination = Screen.Start.name,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = Screen.Start.name) {
-                ScreenWithToDo(viewModel = viewModel)
+                ScreenWithToDo(viewModel = viewModel,
+                    onEditClick = { navController.navigate(Screen.Edit.name) },
+                    onAddClick = { navController.navigate(Screen.AddToDo.name) })
             }
             composable(route = Screen.AddToDo.name) {
                 AddNewToDoScreen(
                     context = context,
                     viewModel = viewModel,
-                    onAddClick = { viewModel.handleViewEvent(TodoListViewEvent.AddItem(it)) })
+                    onAddClick = {
+                        viewModel.handleViewEvent(TodoListViewEvent.AddItem(it))
+                        navController.navigateUp()
+                    })
+            }
+            composable(route = Screen.Edit.name, arguments = listOf()) {
+                EditToDoScreen(
+                    context = context,
+                    viewModel = viewModel,
+                    onSaveClick = {
+                        viewModel.handleViewEvent(TodoListViewEvent.EditItem(it))
+                        navController.navigateUp()
+                    },
+                )
             }
         }
-
     }
 }
 
@@ -80,7 +88,6 @@ fun Screen(
 fun ToDoAppBar(
     currentScreen: Screen,
     navigateUp: () -> Unit,
-    buttonAdd: () -> Unit
 ) {
     TopAppBar(title = { Text(text = stringResource(currentScreen.title)) },
         navigationIcon = {
@@ -88,11 +95,6 @@ fun ToDoAppBar(
                 IconButton(onClick = navigateUp) {
                     Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "кнопка назад")
                 }
-            else {
-                IconButton(onClick = buttonAdd) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "кнопка добавить")
-                }
-            }
         }
     )
 }

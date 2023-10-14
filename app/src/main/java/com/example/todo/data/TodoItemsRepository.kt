@@ -14,11 +14,11 @@ class TodoItemsRepository(val dao: ToDoDao) : ViewModel() {
     val uiState = _uiState.asStateFlow()
 
     suspend fun saveData(ToDo: TodoItem) {
-        viewModelScope.launch { dao.Upsert(todoItem = ToDo) }
+        dao.Upsert(todoItem = ToDo)
     }
 
     suspend fun deleteData(ToDo: TodoItem) {
-        viewModelScope.launch { dao.delete(ToDo) }
+        dao.delete(ToDo)
     }
 
     init {
@@ -50,6 +50,16 @@ class TodoItemsRepository(val dao: ToDoDao) : ViewModel() {
                     _uiState.value = _uiState.value.copy(ToDoList = items)
                 }
             }
+
+            is TodoListViewEvent.EditItem -> {
+                viewModelScope.launch {
+                    val items = currentState.ToDoList
+                        .map { if (it.id == uiState.value.idToEdit) viewEvent.ToDo else it}.toMutableList()
+                    saveData(viewEvent.ToDo)
+                    _uiState.value = _uiState.value.copy(ToDoList = items)
+                }
+            }
+
         }
     }
 }
@@ -57,4 +67,5 @@ class TodoItemsRepository(val dao: ToDoDao) : ViewModel() {
 sealed class TodoListViewEvent {
     data class AddItem(val ToDo: TodoItem) : TodoListViewEvent()
     data class RemoveItem(val ToDo: TodoItem) : TodoListViewEvent()
+    data class EditItem(val ToDo: TodoItem) : TodoListViewEvent()
 }
