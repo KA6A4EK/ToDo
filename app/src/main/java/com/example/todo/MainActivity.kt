@@ -15,6 +15,8 @@ import com.example.todo.data.AppDatabase
 import com.example.todo.data.TodoItemsRepository
 import com.example.todo.ui.screens.Screen
 import com.example.todo.ui.theme.ToDoTheme
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : ComponentActivity() {
     private val db by lazy {

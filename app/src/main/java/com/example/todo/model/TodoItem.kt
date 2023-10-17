@@ -11,8 +11,7 @@ enum class impotance {
 
 @Entity(tableName = "todoItems")
 data class TodoItem(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int=0,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val text: String,
     val impotance: impotance,
     val deadline: String,

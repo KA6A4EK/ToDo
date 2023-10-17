@@ -39,7 +39,7 @@ fun ScreenWithToDo(
     )
     { innerPadding ->
         LazyColumn(modifier = Modifier.padding(innerPadding)) {
-            items(state.value.ToDoList, key = { item -> item.id })
+            items(state.value.ToDoList)
             { todo ->
                 ToDoCard(
                     ToDo = todo,
