@@ -1,7 +1,6 @@
 package com.example.todo.ui.screens
 
 import android.content.Context
-import android.icu.text.SimpleDateFormat
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,14 +27,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.todo.R
+import com.example.todo.data.TodoItemsRepository
 import com.example.todo.model.TodoItem
 import com.example.todo.model.impotance
-import com.example.todo.data.TodoItemsRepository
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Date
 
@@ -50,9 +49,8 @@ fun AddNewToDoScreen(
 ) {
     val state = viewModel.uiState.collectAsState()
 
-
     var text by remember { mutableStateOf("") }
-    var impotance: impotance
+    var impotance: impotance?
     var deadline: String?
     val dateOfCreation = Date().toString()
     val dateOfChange: String = Date().toString()
@@ -88,8 +86,12 @@ fun AddNewToDoScreen(
                         dateOfCreation = dateOfCreation,
                         deadline = deadline!!,
                         impotance = impotance,
+                        id = state.value.nextId
                     )
+
                 )
+                state.value.nextId++
+
                 text = ""
                 Toast.makeText(context, R.string.addNew, Toast.LENGTH_SHORT).show()
             } else {
@@ -104,7 +106,7 @@ fun AddNewToDoScreen(
 
 
 @Composable
-fun DropDownMenuImpotance(Impotance: impotance = impotance.LOW): impotance {
+fun DropDownMenuImpotance(Impotance: impotance? = impotance.LOW): impotance? {
     val items = listOf(impotance.LOW, impotance.MEDIUM, impotance.HIGH)
     var selectedItem by remember { mutableStateOf(Impotance) }
     var expanded by remember { mutableStateOf(false) }
@@ -129,7 +131,7 @@ fun DropDownMenuImpotance(Impotance: impotance = impotance.LOW): impotance {
 }
 
 @Composable
-fun pickDate(date :LocalDate = LocalDate.now()  ): LocalDate {
+fun pickDate(date: LocalDate = LocalDate.now()): LocalDate {
     var date by remember { mutableStateOf(date) }
     val dateDialogState = rememberMaterialDialogState()
     var text by remember { mutableStateOf(date.toString()) }

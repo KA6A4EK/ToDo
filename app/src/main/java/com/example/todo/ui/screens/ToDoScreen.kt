@@ -26,18 +26,20 @@ import androidx.navigation.compose.rememberNavController
 import com.example.todo.R
 import com.example.todo.data.TodoItemsRepository
 import com.example.todo.data.TodoListViewEvent
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.ktx.Firebase
 
 enum class Screen(@StringRes val title: Int) {
     Start(title = R.string.startTitle),
     AddToDo(title = R.string.addTitle),
-    Edit(title = R.string.EditToDo)
-}
+    Edit(title = R.string.EditToDo)}
 
 @Composable
 fun Screen(
     navController: NavHostController = rememberNavController(),
     viewModel: TodoItemsRepository = viewModel(),
-    context: Context
+    context: Context,
+
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = Screen.valueOf(
@@ -69,7 +71,7 @@ fun Screen(
                         navController.navigateUp()
                     })
             }
-            composable(route = Screen.Edit.name, arguments = listOf()) {
+            composable(route = Screen.Edit.name) {
                 EditToDoScreen(
                     context = context,
                     viewModel = viewModel,

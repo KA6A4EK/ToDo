@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import com.example.todo.R
 import com.example.todo.data.TodoItemsRepository
 import com.example.todo.model.TodoItem
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -69,7 +71,7 @@ fun ToDoCard(
             }
             Button(onClick = {
                 onEdit()
-                viewModel.uiState.value.idToEdit = ToDo.id
+                viewModel.uiState.value.idToEdit = ToDo.dateOfCreation
             }) {
                 Text(text = stringResource(R.string.update))
             }
@@ -92,15 +94,15 @@ fun ToDoCard(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier) {
                     Text(
-                        text = ToDo.text,
+                        text = ToDo.text.toString(),
                         style = MaterialTheme.typography.headlineMedium,
                         maxLines = if (expanded) 10 else 2
                     )
                 }
                 if (expanded) {
                     Text(
-                        text = stringResource(R.string.impotance, ToDo.impotance) +
-                                stringResource(R.string.deadline, ToDo.deadline.replace("GMT ", "")),
+                        text = stringResource(R.string.impotance, ToDo.impotance.toString()) +
+                                stringResource(R.string.deadline, ToDo.deadline.toString()),
                         modifier = Modifier.padding(start = 8.dp),
                         style = MaterialTheme.typography.headlineSmall
                     )

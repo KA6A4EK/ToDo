@@ -1,20 +1,26 @@
 package com.example.todo.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import java.util.Date
-
 
 enum class impotance {
     LOW, MEDIUM, HIGH
 }
 
-@Entity(tableName = "todoItems")
+fun impotanceFromString(impot: String?): impotance {
+    if (impot == "HIGH") {
+        return impotance.HIGH
+    } else if (impot == "MEDIUM") {
+        return impotance.MEDIUM
+    }
+    return impotance.LOW
+
+}
+
+
 data class TodoItem(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val text: String,
-    val impotance: impotance,
-    val deadline: String,
-    val dateOfCreation: String,
-    val dateOfChange: String
+    val id: Int? = 0,
+    val text: String?,
+    val impotance: impotance?,
+    val deadline: String?,
+    val dateOfCreation: String?,
+    val dateOfChange: String?
 )

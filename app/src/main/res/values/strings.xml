@@ -29,4 +29,5 @@
     <string name="save">Сохранить</string>
     <string name="succefull_update">запись отредактирована</string>
     <string name="bad_editing">запись не отредактирована\nпустой текст</string>
+    <string name="test">test</string>
 </resources>

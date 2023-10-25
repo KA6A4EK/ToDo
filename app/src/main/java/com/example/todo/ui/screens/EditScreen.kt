@@ -1,6 +1,8 @@
 package com.example.todo.ui.screens
 
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,14 +40,25 @@ fun EditToDoScreen(
 ) {
 
     val state = viewModel.uiState.collectAsState()
-    val todo = state.value.ToDoList.first { it.id == state.value.idToEdit }
+    val todo =
+        if (state.value.ToDoList.first { it.dateOfCreation == state.value.idToEdit } != null) {
+            state.value.ToDoList.first {
+                it.dateOfCreation == state.value.idToEdit
+            }
+        } else {
+            state.value.ToDoList.first()
+
+        }
+    Log.w(TAG, todo.toString())
+
+//    val todo = state.value.ToDoList.first { it.dateOfCreation == state.value.idToEdit }
 
 
     var text by remember { mutableStateOf(todo.text) }
     var impotance = todo.impotance
     var deadline = todo.deadline
     val jobDone = false
-    val dateOfCreation = Date().toString()
+    val dateOfCreation = todo.dateOfCreation
     val dateOfChange: String = Date().toString()
 
 
@@ -59,7 +72,7 @@ fun EditToDoScreen(
         Text(text = stringResource(id = R.string.add_description), fontSize = 22.sp)
 
         OutlinedTextField(
-            value = text,
+            value = text.toString(),
             onValueChange = { newText -> text = newText },
             Modifier
                 .fillMaxWidth()
@@ -96,11 +109,9 @@ fun EditToDoScreen(
                     R.string.bad_editing,
                     Toast.LENGTH_SHORT
                 ).show()
-
             }
         }) {
             Text(text = stringResource(R.string.save), fontSize = 22.sp)
-
         }
     }
 }
